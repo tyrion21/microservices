@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "SalonServiceApplication",
+            "request": "launch",
+            "mainClass": "com.jason.salon_service.SalonServiceApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UserServiceApplication<user_service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jason.UserServiceApplication",
+            "projectName": "user_service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
