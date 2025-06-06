@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class SalonServiceImpl implements SalonService {
 
     private final SalonRepository salonRepository;
-    
+
     @Override
     public Salon createSalon(SalonDTO req, UserDTO user) {
         Salon salon = new Salon();
@@ -32,11 +32,13 @@ public class SalonServiceImpl implements SalonService {
         salon.setImages(req.getImages());
 
         return salonRepository.save(salon); // Return the created salon object
-    }    @Override
+    }
+
+    @Override
     public Salon updateSalon(SalonDTO salon, UserDTO user, Long salonId) throws RuntimeException {
-        
+
         Salon existingSalon = salonRepository.findById(salonId).orElse(null);
-        if(existingSalon != null && existingSalon.getOwnerId().equals(user.getId())) {
+        if (existingSalon != null && salon.getOwnerId().equals(user.getId())) {
             existingSalon.setName(salon.getName());
             existingSalon.setAddress(salon.getAddress());
             existingSalon.setPhone(salon.getPhone());
@@ -49,8 +51,8 @@ public class SalonServiceImpl implements SalonService {
             return salonRepository.save(existingSalon); // Return the updated salon object
         }
         throw new RuntimeException("Salon not found with id: " + salonId);
-    }    
-    
+    }
+
     @Override
     public List<Salon> getAllSalons() {
         return salonRepository.findAll();
@@ -81,7 +83,9 @@ public class SalonServiceImpl implements SalonService {
             throw new RuntimeException("No salons found in city: " + city);
         }
         return salons;
-    }    @Override
+    }
+
+    @Override
     public void deleteSalon(Long salonId) {
         if (!salonRepository.existsById(salonId)) {
             throw new RuntimeException("Salon not found with id: " + salonId);
