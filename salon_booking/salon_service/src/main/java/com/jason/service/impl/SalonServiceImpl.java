@@ -27,8 +27,8 @@ public class SalonServiceImpl implements SalonService {
         salon.setEmail(req.getEmail());
         salon.setCity(req.getCity());
         salon.setOwnerId(user.getId());
-        salon.setOpeningTime(req.getOpeningTime());
-        salon.setClosingTime(req.getClosingTime());
+        salon.setOpenTime(req.getOpenTime());
+        salon.setCloseTime(req.getCloseTime());
         salon.setImages(req.getImages());
 
         return salonRepository.save(salon); // Return the created salon object
@@ -45,8 +45,8 @@ public class SalonServiceImpl implements SalonService {
             existingSalon.setEmail(salon.getEmail());
             existingSalon.setCity(salon.getCity());
             existingSalon.setOwnerId(user.getId());
-            existingSalon.setOpeningTime(salon.getOpeningTime());
-            existingSalon.setClosingTime(salon.getClosingTime());
+            existingSalon.setOpenTime(salon.getOpenTime());
+            existingSalon.setCloseTime(salon.getCloseTime());
             existingSalon.setImages(salon.getImages());
             return salonRepository.save(existingSalon); // Return the updated salon object
         }
