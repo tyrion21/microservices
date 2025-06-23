@@ -1,6 +1,6 @@
 package com.jason.payload.dto;
 
-import com.jason.domain.UserRole;
+// import com.jason.domain.UserRole;
 import lombok.Data;
 
 @Data

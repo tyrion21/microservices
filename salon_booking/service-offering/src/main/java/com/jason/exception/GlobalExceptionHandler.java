@@ -2,7 +2,7 @@ package com.jason.exception;
 
 
 import com.jason.payload.response.ExceptionResponse;
-import org.apache.catalina.User;
+// import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

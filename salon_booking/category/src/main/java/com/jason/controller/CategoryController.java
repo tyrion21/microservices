@@ -1,9 +1,9 @@
 package com.jason.controller;
 
-import com.jason.exception.UserException;
+// import com.jason.exception.UserException;
 import com.jason.modal.Category;
-import com.jason.payload.dto.SalonDTO;
-import com.jason.payload.dto.UserDTO;
+// import com.jason.payload.dto.SalonDTO;
+// import com.jason.payload.dto.UserDTO;
 import com.jason.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

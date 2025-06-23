@@ -19,14 +19,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ServiceOfferingImpl implements ServiceOfferingService {
 
-
     private final ServiceOfferingRepository serviceOfferingRepository;
 
     @Override
     public ServiceOffering createService(ServiceDTO service,
-                                         SalonDTO salon,
-                                         CategoryDTO category) {
-        ServiceOffering serviceOffering=new ServiceOffering();
+            SalonDTO salon,
+            CategoryDTO category) {
+        ServiceOffering serviceOffering = new ServiceOffering();
         serviceOffering.setName(service.getName());
         serviceOffering.setDescription(service.getDescription());
         serviceOffering.setPrice(service.getPrice());
@@ -46,7 +45,7 @@ public class ServiceOfferingImpl implements ServiceOfferingService {
             updatedService.setDescription(service.getDescription());
             updatedService.setPrice(service.getPrice());
             updatedService.setDuration(service.getDuration());
-            if(service.getImage()!=null){
+            if (service.getImage() != null) {
                 updatedService.setImage(service.getImage());
             }
 
@@ -58,10 +57,10 @@ public class ServiceOfferingImpl implements ServiceOfferingService {
 
     @Override
     public Set<ServiceOffering> getAllServicesBySalonId(Long salonId,
-                                                        Long categoryId) {
+            Long categoryId) {
         Set<ServiceOffering> services = serviceOfferingRepository.findBySalonId(salonId);
-        if(categoryId != null) {
-            services=services.stream()
+        if (categoryId != null) {
+            services = services.stream()
                     .filter(service -> service.getCategoryId() != null && service.getCategoryId().equals(categoryId))
                     .collect(Collectors.toSet());
         }
@@ -75,7 +74,6 @@ public class ServiceOfferingImpl implements ServiceOfferingService {
                 .findById(serviceId);
         return service.orElse(null);
     }
-
 
     @Override
     public Set<ServiceOffering> getServicesByIds(Set<Long> ids) {
