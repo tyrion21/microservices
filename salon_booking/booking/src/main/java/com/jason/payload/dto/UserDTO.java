@@ -1,12 +1,13 @@
-package com.jason.payload.DTO;
+package com.jason.payload.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+// import com.jason.domain.UserRole;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UserDTO {
+
     private Long id;
     private String fullName;
     private String email;
+
 }
