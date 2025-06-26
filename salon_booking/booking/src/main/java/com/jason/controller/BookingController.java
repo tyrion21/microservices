@@ -1,22 +1,32 @@
 package com.jason.controller;
 
+import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jason.domain.BookingStatus;
+import com.jason.mapper.BookingMapper;
 import com.jason.modal.Booking;
+import com.jason.modal.SalonReport;
+import com.jason.payload.dto.BookedSlotsDTO;
+import com.jason.payload.dto.BookingDTO;
 import com.jason.payload.dto.BookingRequest;
 import com.jason.payload.dto.SalonDTO;
 import com.jason.payload.dto.ServiceDTO;
 import com.jason.payload.dto.UserDTO;
 import com.jason.service.BookingService;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -57,10 +67,90 @@ public class BookingController {
         return ResponseEntity.ok(booking);
     }
 
-
- // create getBookingsByCustomer
+    // create getBookingsByCustomer
     @PostMapping("/customer")
-    public ResponseEntity<Set<Booking>> getBookingsByCustomer(@RequestParam Long customerId) {
-        Set<Booking> bookings = bookingService.getBookingsByCustomer(customerId);
-        return ResponseEntity.ok(bookings);
+    public ResponseEntity<Set<BookingDTO>> getBookingsByCustomer(
+
+    ) {
+
+        List<Booking> bookings = bookingService.getBookingsByCustomer(1L);
+
+        return ResponseEntity.ok(getBookingDTOs(bookings));
+    }
+
+    private Set<BookingDTO> getBookingDTOs(List<Booking> bookings) {
+        return bookings.stream()
+                .map(BookingMapper::toDTO)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<BookingDTO> getBookingById(
+            @PathVariable Long bookingId) throws Exception {
+        Booking booking = bookingService.getBookingById(bookingId);
+
+        return ResponseEntity.ok(BookingMapper.toDTO(booking));
+    }
+
+    @PutMapping("/{bookingId}/status")
+    public ResponseEntity<BookingDTO> updateBookingStatus(
+            @PathVariable Long bookingId,
+            @RequestParam BookingStatus status) throws Exception {
+        Booking booking = bookingService.updateBooking(bookingId, status);
+
+        return ResponseEntity.ok(BookingMapper.toDTO(booking));
+    }
+
+    @GetMapping("/slots/salon/{salonId}/date/{date}")
+    public ResponseEntity<List<BookedSlotsDTO>> getBookedSlots (
+            @PathVariable Long salonId,
+            @PathVariable LocalDate date
+            // @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+
+        List<Booking> bookings = bookingService.getBookingsByDate(date,salonId);
+
+        List<BookedSlotsDTO> slotsDTOS = bookings.stream()
+                .map(booking -> {
+                    BookedSlotsDTO slotDto = new BookedSlotsDTO();
+
+                    slotDto.setStartTime(booking.getStartTime());
+                    slotDto.setEndTime(booking.getEndTime());
+
+
+                    return slotDto;
+                })
+                .toList();
+
+
+        return ResponseEntity.ok(slotsDTOS);
+
+
+    }
+
+    @GetMapping("/salon")
+    public ResponseEntity<Set<BookingDTO>> getBookingsBySalon(
+            @RequestParam Long salonId) {
+
+        List<Booking> bookings = bookingService.getBookingsBySalon(salonId);
+
+        return ResponseEntity.ok(getBookingDTOs(bookings));
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<SalonReport> getSalonReport(
+            // @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+
+        // UserDTO user = userService.getUserFromJwtToken(jwt).getBody();
+
+        // SalonDTO salon = salonService.getSalonByOwner(jwt).getBody();
+
+        SalonReport report = bookingService.getSalonReport(1L);
+
+
+        return ResponseEntity.ok(report);
+
+    }
+
 }
